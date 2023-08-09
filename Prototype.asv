@@ -12,13 +12,12 @@ stepc=num2str(maxcurrent/numberofsteps);
 stepv=num2str((maxvoltage-minvoltage)/numberofsteps);
 minv=num2str(minvoltage); 
 
-serialportlist("available");
-obj1=serialport("COM4",19200);
-configureTerminator(obj1,"CR",13);
+obj1=serialport('COM4','baudrate',19200,'configureterminator',13);
 
 % Model 2400 Specific Functions
 % Sweep current and measure back voltage
-writeline(obj1,':*RST')
+serialport(obj1);
+fpwriteline(obj1,':*RST')
 % setup the 2400 to generate an SRQ on buffer full 
 writeline(obj1,':*ESE 0');
 writeline(obj1,':*CLS');
@@ -68,7 +67,7 @@ writeline(obj1,':TRAC:DATA?');
 % 
 %C=fscanf(obj1,%f%);
 B = readline(obj1);
-A = str2double(B);
+A = str2duble(B);
 % 
 % % parse the data & plot
 Curr=A(2:2:size(A,2));
